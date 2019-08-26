@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Soul</title>
+    <script type="text/javascript" src="./js-a/ydc.js"></script>
+    <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.json-2.3.js"></script>
+    <script type="text/javascript" src="./js-a/tree.js"></script>
+    <script type="text/javascript" src="./js-a/hidden.js"></script>
+
+    <script type="text/javascript">
+        YDC.dynamicLoading.js('./js-a/audio.js');
+        YDC.dynamicLoading.js('./js/Model/queryConditions.js');
+        YDC.dynamicLoading.js('./js/Model/ydcTable.js');
+        YDC.dynamicLoading.js('./js-a/drag.js');
+
+        $(function () {
+//            YDC.setLayout.horizontal($('#middle'), [{id: 'daoHang', width: 20.5}, {id: 'content'}]);
+            YDC.dateOperation.keep($("#today"));
+            var nav = [
+                {
+                    id: 1,
+                    pid: 0,
+                    name: "三生三世",
+                    url: '',
+                    isExpanded: true,
+                    fixedImgUrl: './img/view_list.png',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 6,
+                    pid: 0,
+                    name: "娱乐",
+                    url: '',
+                    fixedImgUrl: './img/music.png',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 2,
+                    pid: 1,
+                    name: "十里桃花",
+                    url: '',
+                    isExpanded: true,
+                    fixedImgUrl: './img/view_list.png',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 3,
+                    pid: 1,
+                    name: "逃之夭",
+                    url: '',
+                    isExpanded: true,
+                    fixedImgUrl: './img/view_list.png',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 4,
+                    pid: 2,
+                    name: "控件拖拽",
+                    url: 'html/drag.html',
+                    fixedImgUrl: '',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 8,
+                    pid: 2,
+                    name: "页面测试",
+                    url: 'html/Title.html',
+                    fixedImgUrl: '',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 5,
+                    pid: 3,
+                    name: "自制表格",
+                    url: 'html/db/model.html',
+                    fixedImgUrl: '',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 9,
+                    pid: 3,
+                    name: "上传下载",
+                    url: 'html/upload.html',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },
+                {
+                    id: 7,
+                    pid: 6,
+                    name: "网易云音乐",
+                    url: 'html/music.html',
+                    fixedImgUrl: './img/music.png',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                },{
+                    id: 10,
+                    pid: 3,
+                    name: "SQL",
+                    url: 'html/sql.html',
+                    expandedImgUrl: './img/remove.png',
+                    collapseImgUrl: './img/add.png'
+                }
+            ];
+            var tree = new YTree('menu', nav, 'content');
+//            tree.useImg = false;
+            tree.config.useExpandedCollapseImg =true;
+            tree.config.usePrefixIcon = true;
+//            tree.config.leftECImg = true;
+            tree.build($('#daoHang'));
+            new Hidden('menu', 'daoHang', 'content').build();
+
+//            $("#" + treeClassName.ul + '1').css('border', '3px solid red');
+
+            $("." + treeClassName.li + '0').css('background-color', 'gray');
+            $("." + treeClassName.li + '1').css('background-color', 'lightgray');
+            $("." + treeClassName.li + '2').css('background-color', 'white');
+
+//            $("." + tree.config.spanClassName + '0').css('font-size', '32px');
+
+            $('#content').css('margin-left', ($('#menu').width() + $('#hiddenBar').width()) + 'px');
+        });
+    </script>
+</head>
+<body onload="YDC.dateOperation.show($('#today'))">
+<div id="top" style="height:100px;background: -webkit-gradient(linear,left top,left bottom,from(white),to(#666666));
+  background:-moz-linear-gradient(top,black,#666666);">
+    <span id="today" style="float: right"></span>
+    <marquee style="padding-left:80px; height: 80px" scrollamount="8" direction="right" align="middle">
+        <h id="animate" style="color: yellow;font-size: 30px"> 羊栋程</h>
+    </marquee>
+</div>
+<div id="middle" style="position: relative;height: 500px">
+
+    <div id='daoHang' style="height: 500px;position: absolute;width: 220px;">
+
+    </div>
+
+    <div id="content" style="height: 500px">
+
+    </div>
+</div>
+
+<div id="bottom" style="background-color: gray;height:60px;clear: both;text-align: center;line-height: 60px">
+    Ydc create @2018
+</div>
+</body>
+</html>

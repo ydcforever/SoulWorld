@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+        function drag1(ev) {
+            var event = ev || window.event;
+            event.dataTransfer.setData("symbol", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("symbol");
+            ev.target.appendChild(document.getElementById(data));
+        }
+
+        //        drag($('#content'), $('.drag'));
+        $('.drag').drag($('#content'));
+    </script>
+</head>
+<body>
+
+<div id="div1" ondrop="drop(event)"
+     ondragover="allowDrop(event)" style="height: 60px;border:1px solid red"></div>
+<div style="vertical-align:middle; position: absolute">
+    <input class="drag" type="text" style="vertical-align: middle;text-align: center" value="kk"/></div>
+
+<div id="drag2" draggable="true" ondragstart="drag1(event)">
+    <input type="text" value="ydc" style="width: 40px"/>
+</div>
+<div id="drag1" draggable="true" ondragstart="drag1(event)">
+    <input value="ydc12222222222222222"/>
+</div>
+<div class="drag" style="vertical-align:middle;position: absolute">ydc</div>
+<div style="position: relative">
+    <div class="drag" style="background-color: antiquewhite;position: absolute;width: 100px;height: 80px"></div>
+</div>
+</body>
+</html>

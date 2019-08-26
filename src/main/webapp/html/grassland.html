@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>three.js webgl - buffergeometry - lines - indexed</title>
+    <meta charset="utf-8">
+
+    <style>
+        body {
+            color: #cccccc;
+            font-family: Monospace;
+            font-size: 13px;
+            text-align: center;
+
+            background-color: #000000;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            padding: 5px;
+        }
+
+        a {
+            color: #0080ff;
+        }
+    </style>
+
+    <script src="3Djs/three.js"></script>
+    <script src="3Djs/stats.min.js"></script>
+    <script src="3Djs/Ydc/renderers/Projector.js"></script>
+    <script src="3Djs/Ydc/Detector.js"></script>
+    <script src="3Djs/Ydc/build3D.js"></script>
+    <script src="3Djs/Ydc/mesh/texture.js"></script>
+    <script src="3Djs/Ydc/controls/OrbitControls.js"></script>
+    <script src="3Djs/Ydc/renderers/CanvasRenderer.js"></script>
+    <script src="3Djs/Ydc/curves/NURBSCurve.js"></script>
+    <script src="3Djs/Ydc/curves/NURBSSurface.js"></script>
+    <script src="3Djs/Ydc/curves/NURBSUtils.js"></script>
+    <script src="3Djs/Ydc/mesh/particle.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    if (!Detector.webgl)
+        Detector.addGetWebGLMessage();
+
+    var container, stats;
+    var camera, scene, renderer;
+    var mesh;
+    var textureMesh;
+    var clock = new THREE.Clock();
+    var controls;
+
+    init();
+    animate();
+
+    function init() {
+        container = document.getElementById('container');
+        camera = ydc3D.camera(27, 1, 5000);
+        camera.position.z = 2000;
+        scene = new THREE.Scene();
+        scene.add(new THREE.AmbientLight(0x808080));
+
+//				var material = new THREE.LineBasicMaterial({color:0x038000});
+//				var geometry = new THREE.Geometry();
+//				var curve = new THREE.CatmullRomCurve3([
+//					new THREE.Vector3(0, 50, 0),
+//				new THREE.Vector3(0, 100, 100),
+//				new THREE.Vector3(50, 200, 200)
+//			    ]);
+//				geometry.vertices = curve.getPoints(50);
+//				var line=new THREE.Line(geometry,material);
+
+
+//        textureMesh = new TextureMesh(1400, 1000, '../img/grass.png');
+//        mesh = textureMesh.getMesh();
+//        mesh.rotation.x = -Math.PI / 4;
+//        scene.add(mesh);
+        createSprite();
+
+        renderer = new THREE.WebGLRenderer({ antialias: true } );
+        ydc3D.renderer(container, renderer, 0xFFDDAA);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        //性能测试
+        stats = new Stats();
+        container.appendChild(stats.dom);
+
+        //
+        window.addEventListener('resize', ydc3D.onWindowResize, false);
+    }
+
+
+    //
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function render() {
+//				var delta = clock.getDelta();
+//				var time = clock.getElapsedTime() * 10;
+//				var position = textureMesh.geometry.attributes.position;
+//				for ( var i = 0; i < position.count; i ++ ) {
+//					var z = 100 * Math.cos( i / 5 + ( time + i) / 9 );
+//					position.setZ( i, z );
+//				}
+//				position.needsUpdate = true;
+
+//				mesh.rotation.x = time * 0.25;
+//				mesh.rotation.y = time * 0.5;
+//				mesh.rotation.z = time * 0.25;
+        renderer.render(scene, camera);
+    }
+
+    function createGrass() {
+        var points = [
+            new THREE.Vector2(50, 60),
+            new THREE.Vector2(50, 0)
+        ];
+        var pointsGeometry = new THREE.LatheGeometry(points, 30);
+        var pointsMaterial = new THREE.MeshPhongMaterial({
+            color: 0xFFAADD,//三角面颜色
+            side: THREE.DoubleSide//两面可见
+        });
+        pointsMaterial.wireframe = true;
+        var pointsMesh = new THREE.Mesh(pointsGeometry, pointsMaterial);
+//				pointsMesh.translateX(300);
+        pointsMesh.translateY(150);
+        scene.add(pointsMesh);
+
+
+//				var curve = new THREE.CatmullRomCurve3([
+//					new THREE.Vector3(x, Math.cos(x)+50, 0),
+//					new THREE.Vector3(x, Math.sin(x)+100, x+100),
+//					new THREE.Vector3(x+50, Math.cos(x)+200, 200-x),
+//					new THREE.Vector3(x, Math.cos(x)+50, 0)
+//				]);
+//				geometry.vertices = curve.getPoints(50);
+    }
+
+    function createNur() {
+        var group = new THREE.Group();
+        group.position.y = 50;
+        scene.add(group);
+
+        var nsControlPoints = [
+            [
+                new THREE.Vector4(-200, -200, 100, 1),
+                new THREE.Vector4(-200, -100, -200, 1),
+                new THREE.Vector4(-200, 100, 250, 1),
+                new THREE.Vector4(-200, 200, -100, 1),
+                new THREE.Vector4(-200, 100, 100, 1)
+            ]
+//						,
+
+//					[
+//						new THREE.Vector4 ( 0, -200, 0, 1 ),
+//						new THREE.Vector4 ( 0, -100, -100, 5 ),
+//						new THREE.Vector4 ( 0, 100, 150, 5 ),
+//						new THREE.Vector4 ( 0, 200, 0, 1 )
+//					]
+            ,
+            [
+                new THREE.Vector4(200, -200, -100, 1),
+                new THREE.Vector4(200, -100, 200, 1),
+                new THREE.Vector4(200, 100, -250, 1),
+                new THREE.Vector4(200, 200, 100, 1),
+                new THREE.Vector4(200, 100, 100, 1)
+            ]
+        ];
+        var degree1 = 1;
+        var degree2 = 3;
+        var knots1 = [0, 0, 1, 1];
+        var knots2 = [0, 0, 0, 0, 1, 1, 1, 1];
+        var nurbsSurface = new THREE.NURBSSurface(degree1, degree2, knots1, knots2, nsControlPoints);
+
+        getSurfacePoint = function (u, v) {
+            return nurbsSurface.getPoint(u, v);
+        };
+
+        var geometry = new THREE.ParametricGeometry(getSurfacePoint, 20, 20);
+        var material = new THREE.MeshLambertMaterial({side: THREE.DoubleSide});
+        var object = new THREE.Mesh(geometry, material);
+        object.position.set(-200, 100, 0);
+        object.scale.multiplyScalar(1);
+        group.add(object);
+    }
+
+    function createSprite() {
+//        var material = DMaterial("../img/snowflake2.png", [1.0,0.2,0.5], 20);
+        var material = new THREE.PointsMaterial({color : 0xFF00AA, size : 30});
+        var material2 = new THREE.PointsMaterial({color : 0x0000AA, size : 20});
+//        var material3 = new THREE.SpriteMaterial();
+        var mesh = new DParticle(1000).build(material);
+        var mesh2 = new DParticle(500).build(material2);
+//        var mesh3 = new DParticle(500).build(material3);
+        scene.add(mesh);
+        scene.add(mesh2);
+//        scene.add(mesh3);
+    }
+</script>
+</body>
+</html>

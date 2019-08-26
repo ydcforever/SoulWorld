@@ -1,0 +1,30 @@
+#animate  {
+    padding-left: 20px;
+    line-height: 100px;
+    /*font-size: 16px;*/
+    color: greenyellow;
+    white-space: nowrap;
+    animation: 15s wordsLoop linear infinite normal;
+}
+
+@keyframes wordsLoop {
+    0% {
+        transform: translateX(0px);
+        -webkit-transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+    }
+}
+
+@-webkit-keyframes wordsLoop {
+    0% {
+        transform: translateX(0px);
+        -webkit-transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+    }
+}

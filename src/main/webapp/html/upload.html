@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        YDC.file.upload($('form'), "./upload/load.do");
+        $.ajax({
+            type: "GET",
+            url: "./upload/show.do",
+            success : function (data) {
+                $(data).each(function(){
+                    var a = YDC.elementBuilder.a("","./upload/down.do?fileName=" + this, this);
+                    $("#files").after(a);
+                });
+            },
+            error : function(){
+                console.log(11);
+            }
+        });
+    </script>
+</head>
+<body>
+<div>
+    <form name="file">
+        <input type="file" name="myFile"/>
+        <input type="submit" name="submit" value="commit">
+    </form>
+
+    <div id="files">
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        YDC.dynamicLoading.css('./css/table.css');
+//        YDC.dynamicLoading.js('/js/Table/colResizable-1.6.js',
+//                YDC.dynamicLoading.js('/js/Table/colResizable-1.6.min.js',
+//                        YDC.dynamicLoading.js('/js/Table/jquery.js')));
+        var queryExample = [
+            {
+                label: 'query0',
+                field: 'column0',
+                useDataList: true,
+                isInit: true,
+                initData: [1, 2]
+            },
+            {
+                label: 'query1',
+                field: 'column1',
+                useDataList: true,
+                isInit: true,
+                useUrlInit: true,
+//                initUrl:'/airport/queryAreaPartition.do'
+                initUrl: './table/queryTable.do',
+                nextCascadeQuery: true,
+                cascadeQueryUrl: './table/queryTableInfo.do'
+            },
+            {label: 'query2', field: 'column2', useDataList: true}
+        ];
+        var query = new QueryConditions('query', queryExample, 1, ['30%', '20%', '30%']);
+        query.build();
+        $('.querySpan').css('font-size', '25px');
+        $('.queryInput').css({'width': '200px', 'height': '25px'});
+
+
+        var data1 = [
+            {name: '羊', password: '123', ck: true, queryCondition: true},
+            {name: '羊栋程', password: '123'},
+            {name: '羊羊羊羊', password: '123'},
+            {name: 'ydc', password: '123456'}
+        ];
+        var tab = new ydcTable(data1);
+        tab.build('#ydc-table');
+        $('input[name=button]').click(function () {
+            console.log(tab.getSelectRows('#ydc-table', 'ck'));
+        });
+
+//                var queryExample1 = [{ column : 'asdsasdsa', type : '', property : '', queryCondition : '', display:'' },
+//                    { column : '', type : '', property : '', queryCondition : '', display:'' },
+//                    { column : '', type : '', property : '', queryCondition : '', display:'' }];
+//                var data = new ydcTableData(queryExample1, ['20%', '70px', '100px', '80px', '90px'],['列名','类型','JAVA属性名','查询条件','展示']);
+//                data.pageSize = 2;
+//                var bar = new ydcTableTurnBar();
+//                new ydcTable('table', data, bar);
+//                $('#' + data.dataAreaId).css('height', '300px');
+    </script>
+</head>
+<body>
+<div id="query">
+
+</div>
+<div id="table">
+    <table id="ydc-table" class="resizable-table" cellspacing="0" cellpadding="0" border="0">
+    </table>
+</div>
+<input type="button" value="详情" name="button"/>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        var arr = [{id: 'Ac', width: 20}, {id: 'Ad'}];
+        function setLayout(contain, areas) {
+            var offsetLeft = 0;
+            var len = areas.length;
+            for (var i = 0; i < len; i++) {
+                if (i == len - 1) {
+                    $(contain).append($('<div id= "' + arr[i].id + '" style="background-color:blue;position:absolute;top:0px;right:0;width:' + (100.1 - offsetLeft) + '%;height:100%' + '">'));
+                } else {
+                    $(contain).append($('<div id= "' + arr[i].id + '" style="position:absolute;top:0px;left:' + offsetLeft + '%;width:' + arr[i].width + '%;height:100%' + '">'));
+                }
+                offsetLeft += arr[i].width;
+            }
+        }
+        setLayout($('#main'), arr);
+    </script>
+</head>
+<body>
+<div id="main" style="width: 100%;height: 200px;position: relative">
+
+</div>
+<ul>
+    <li>
+        <a>
+            <img src="img/add.png" width="20" height="20" style="vertical-align: middle"/>
+            <div style="display: inline-block;vertical-align: middle;width: 20%;">kk</div>
+            <img src="img/music.png" width="20" height="20" style="vertical-align: middle;" />
+        </a>
+    </li>
+    <li>
+        <a>
+            <img src="img/add.png" width="20" height="20" style="vertical-align: middle"/>
+            <div style="display: inline-block;vertical-align: middle;width: 20%;">kkfassf</div>
+            <img src="img/music.png" width="20" height="20" style="vertical-align: middle" />
+        </a>
+    </li>
+</ul>
+</body>
+</html>

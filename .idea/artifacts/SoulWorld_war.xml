@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SoulWorld:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SoulWorld.war">
+      <element id="artifact" artifact-name="SoulWorld:war exploded" />
+    </root>
+  </artifact>
+</component>

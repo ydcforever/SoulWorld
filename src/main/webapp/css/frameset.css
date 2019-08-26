@@ -1,0 +1,17 @@
+#top{
+	height:12%;
+	padding-top:10px;
+	background-color: lightgray;
+	border-bottom: 2px solid orange;
+	
+}
+#left{
+	background-color:lightgray;
+	width: 20%;
+	
+}
+#main{
+	width: 80%;
+	background-repeat: no-repeat;
+	background-image: url(../img/add.png);
+}

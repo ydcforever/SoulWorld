@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydc.mapper.tpm.TPMMapper">
+    <insert id="insert" >
+        insert into TPM
+        (
+        FILLER1,
+        ORIGIN_DESIGNATOR,
+        ORIGIN_C_NAME_N_CODE,
+        FILLER22,
+        ORIGIN_CITY_ALPHA_CODE,
+        FILLER40,
+        ORIGIN_CITY_NUMERIC_CODE,
+        FILLER47,
+        FILLER3,
+        DESTINATION_DESIGNATOR,
+        DESTINATION_C_NAME_N_CODE,
+        FILLER24,
+        TPM,
+        FILLER32,
+        GLOBAL_INDICATOR,
+        CONSTRUCTED_DISTANCE,
+        FILLER36,
+        DESTINATION_CITY_ALPHA_CODE,
+        FILLER41,
+        DESTINATION_CITY_NUMERIC_CODE,
+        FILLER68,
+        ORIGIN_CITY_REGION_CODE,
+        DESTINATION_CITY_REGION_CODE,
+        ORIGIN_CITY_NUMERIC_CODE2,
+        FILLER76,
+        HEADER_ID
+        )
+        values
+        (
+        #{line.filler1, jdbcType=VARCHAR},
+        #{line.originDesignator, jdbcType=VARCHAR},
+        #{line.originCNameNCode, jdbcType=VARCHAR},
+        #{line.filler22, jdbcType=VARCHAR},
+        #{line.originCityAlphaCode, jdbcType=VARCHAR},
+        #{line.filler40, jdbcType=VARCHAR},
+        #{line.originCityNumericCode, jdbcType=VARCHAR},
+        #{line.filler47, jdbcType=VARCHAR},
+        #{sector.filler3, jdbcType=VARCHAR},
+        #{sector.destinationDesignator, jdbcType=VARCHAR},
+        #{sector.destinationCNameNCode, jdbcType=VARCHAR},
+        #{sector.filler24, jdbcType=VARCHAR},
+        #{sector.tpm, jdbcType=VARCHAR},
+        #{sector.filler32, jdbcType=VARCHAR},
+        #{sector.globalIndicator, jdbcType=VARCHAR},
+        #{sector.constructedDistance, jdbcType=VARCHAR},
+        #{sector.filler36, jdbcType=VARCHAR},
+        #{sector.destinationCityAlphaCode, jdbcType=VARCHAR},
+        #{sector.filler41, jdbcType=VARCHAR},
+        #{sector.destinationCityNumericCode, jdbcType=VARCHAR},
+        #{sector.filler68, jdbcType=VARCHAR},
+        #{sector.originCityRegionCode, jdbcType=VARCHAR},
+        #{sector.destinationCityRegionCode, jdbcType=VARCHAR},
+        #{sector.originCityNumericCode2, jdbcType=VARCHAR},
+        #{sector.filler76, jdbcType=VARCHAR},
+        #{line.headerId, jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>

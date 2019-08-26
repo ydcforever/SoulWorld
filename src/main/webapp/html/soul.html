@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <style>canvas { width: 100%; height: 100%}
+	body{margin: 0px; padding:0px;}
+	.spa{   color:black;
+	        width:500px;
+		    height:750px;
+		    font-size:18px;
+            box-shadow: 0px 0px 12px rgba(255,0,255,0.5);
+			border: 1px solid rgba(127,255,255,0.25);
+			cursor: default;}
+				
+	h1{text-align:center;font-size:24px}
+	</style>
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="3Djs/three.min.js"></script>
+	<!--CanvasRenderer调用包-->
+	<script src="3Djs/Ydc/renderers/CSS3DRenderer.js"></script>
+	<script src="3Djs/Ydc/move/tween.min.js"></script>
+	<!--<script src="3Djs/Ydc/controls/TrackballControls.js"></script>-->
+	<script src="3Djs/Ydc/controls/FirstPersonControls.js"></script>
+	<script src="js/Ydc/Ydc3D.js"></script>
+	<script src="3Djs/Ydc/Camera.js"></script>
+	<script src="js/Ydc/SoulWorld.js"></script>
+</head>
+<body>
+    <div id = "ss" ></div>
+    <script type="text/javascript">	 
+		//document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		
+	    var root = document.getElementById('ss');
+		var htmls = initHtmls();
+				  
+		var	scene,camera,renderer;
+		var control,controls;
+		var knowledges = new Array();
+		var clock = new THREE.Clock();
+		var mouseX = 0, mouseY = 0;
+		
+		scene = new THREE.Scene();	
+		camera = initCamera(45,1,4000,5000);		
+		scene.add(camera);
+		renderer = new THREE.CSS3DRenderer();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		root.appendChild( renderer.domElement );	
+		
+		//var str = YDC.HtmlUtils.readfile('C:\\Users\\T440\\Desktop\\20151122.txt');
+		//htmls.push(str);
+		initSPA(htmls);
+		controls = initControl();
+		/*control = new THREE.TrackballControls( camera, renderer.domElement );
+	    control.rotateSpeed = 2;
+		control.minDistance = 600;
+		control.maxDistance = 6000;
+		control.addEventListener( 'change', render );*/
+		
+        window.addEventListener( 'resize', onWindowResize, false );
+		
+		animate();
+		
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			controls.handleResize();			
+		}
+		
+        function onDocumentMouseMove(event) {
+			mouseX = ( event.clientX - windowHalfX ) * 10;
+			mouseY = ( event.clientY - windowHalfY ) * 10;
+		}
+		
+		function render() {	  
+		    //var time = Date.now() * 0.0005;
+			//sphere.position.x = Math.sin( time * 0.7 ) * 2000;
+			//sphere.position.y = Math.cos( time * 0.5 ) * 2000;
+			//sphere.position.z = Math.cos( time * 0.3 ) * 2000;
+			for ( var i = 1, l = scene.children.length; i < l; i ++ ) {
+				scene.children[ i ].lookAt( camera.position );
+			}
+			//camera.position.x += ( mouseX - camera.position.x ) * .05;
+			//camera.position.y += ( - mouseY - camera.position.y ) * .05;
+			// camera.lookAt( scene.position );
+			renderer.render( scene, camera );
+		}
+		
+		function animate() {
+			requestAnimationFrame( animate );
+			controls.update( clock.getDelta() );
+			TWEEN.update();	  
+			//control.update();
+			render();	
+		}
+		
+		function initHtmls() {
+		    var htmls =['<h1 style=\'margin-top:20%\'>欢迎光临</h1><p style=\'text-align:center;margin-top:20%\'>你 的 只 言 片 语</p><p style=\'text-align:center;\'>影 响 他 人 一 生</p><p style=\'text-align:center;\'>找 到 你 的 归 属</p><p style=\'text-align:center;\'>岁 月 静 好。</p><p style=\'text-align:center;\'>一 起 来 玩 吧！</p>'
+		    ,'<h1> 触发器开关</h1><p>alter trigger tcn_join enable/disable</p>',
+			'<h1>增加列</h1><p>alter table tablename add(columnname varchar2(11))</p>',
+			'<h1>存储过程加密</h1> <p>wrap iname=d:SQLCore20150804.sql</p> <p>SQL> @d:SQLCore20150804.plb</p>'];
+		    for(var k = 0;k < 4; k++){
+		        htmls.push('<h1 style=\'margin-top:20%\'>'+k+'</h1>');
+		    }
+	    	var content = YDC.HtmlUtils.getUrlParam("content");
+		    if (content)
+		        htmls.push('<h1>新增</h1>'+content);
+		    return htmls;
+		}
+		
+		function initSPA(htmls) {
+		    for (var i = 0; i<htmls.length; i++){
+		    	//var position = {
+				//	x : -window.innerWidth / 2 + i * 2000,
+				//	y : window.innerWidth / 2 + i%3 * 2000,
+				//	z : i%3*300,
+				//}
+				var front = new SoulWorld.soulShard('spa',i,htmls[i]);
+				root.appendChild(front.showPage);
+				scene.add(front.shard3D);
+				knowledges.push(front);
+		    }
+		
+		    $('.spa').each(function(index){
+		      YDC.EventUtils.addEventHandler(this, "mousedown", SoulEvent.clickSoul,
+	    	   knowledges[index],camera,render);
+		    });
+		}
+		
+		function initControl() {
+			var control = new THREE.FirstPersonControls( camera );
+			control.movementSpeed = 1000;
+			control.lookSpeed = 0.125;
+			control.mouseMove = false;
+//			control.nofly = true;
+			control.lookVertical = true;
+			control.constrainVertical = true;
+			control.verticalMin = 1.1;
+			control.verticalMax = 2.2;
+			return control;
+		}
+
+    </script>
+</body>
+</html>

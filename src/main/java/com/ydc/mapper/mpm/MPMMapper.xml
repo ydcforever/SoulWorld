@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydc.mapper.mpm.MPMMapper">
+	<insert id="batchInsert" parameterType="List">
+		insert into MPM
+		(
+		ORIGIN_CITY_NUMBER,
+		DESTINATION_CITY_NUMBER,
+		DESTINATION_C_NAME_N_CODE,
+		FILTER1,
+		GLOBAL_INDICATOR,
+		SOM,
+		MPM,
+		ORIGIN_CITY_REGION_CODE,
+		DESTINATION_CITY_REGION_CODE,
+		SECTOR_CODE,
+		ORIGIN_C_NAME_N_CODE,
+		FILTER2,
+		ORIGIN_CITY_ALPHA_CODE,
+		DESTINATION_CITY_ALPHA_CODE,
+		HEADER_ID
+		)
+		<foreach collection="list" item="item" index="index"
+			separator="UNION ALL">
+			select #{item.originCityNumber, jdbcType=VARCHAR},
+			#{item.destinationCityNumber, jdbcType=VARCHAR},
+			#{item.destinationCNameNCode, jdbcType=VARCHAR},
+			#{item.filter1, jdbcType=VARCHAR},
+			#{item.globalIndicator, jdbcType=VARCHAR},
+			#{item.som, jdbcType=VARCHAR},
+			#{item.mpm, jdbcType=VARCHAR},
+			#{item.originCityRegionCode, jdbcType=VARCHAR},
+			#{item.destinationCityRegionCode, jdbcType=VARCHAR},
+			#{item.sectorCode, jdbcType=VARCHAR},
+			#{item.originCNameNCode, jdbcType=VARCHAR},
+			#{item.filter2, jdbcType=VARCHAR},
+			#{item.originCityAlphaCode, jdbcType=VARCHAR},
+			#{item.destinationCityAlphaCode, jdbcType=VARCHAR},
+			#{item.headerId, jdbcType=VARCHAR} FROM DUAL
+		</foreach>
+	</insert>
+</mapper>

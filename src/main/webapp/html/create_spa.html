@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+    <title>Create Your World</title>
+	<script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../js/Ydc/Ydc3D.js"></script>
+</head>
+<body onload="autoFocus('code')">
+	<div id="write" style="float:left" >
+	    <textarea  id="code" rows="25" cols="40"></textarea>
+	    <input type="button" id="scan" value="scan"/>
+		<input type="button" id="commit" value="commit"/>
+	</div>
+	<div id="show" style="border:1px solid lightgray;width:400px;height:510px;float:right;">
+	   
+	</div>
+    <script type="text/javascript">
+        $('#scan').click(function(){
+	    	$('#show').html($("#code").val());
+        });
+		
+	    $('#commit').click(function(){
+		    var content=$('#code').val();
+		    window.location.href ='../html/soul.html?content='+content;
+	    });
+		
+		var tx = document.getElementById('code');
+		var browser = new browserType();
+		
+		//回车和>
+		$('#code').keyup(function(event){
+		    if (event.keyCode == 13){
+			    var pos = cursorOperation.get(tx);
+		    	var textOp = new YDC.TextOperation(tx);
+			    var void_str = '';
+				var whole_str = '';
+			    var spacecnt = textOp.getSpaceCount(true);
+				for(var i=0;i< spacecnt;i++){
+				    void_str = void_str + ' ';
+				}	
+                if(textOp.isEndLabel()){
+				    whole_str = void_str+'  '+'\r'+void_str;
+					pos.start = pos.start + spacecnt+2;
+				    pos.end = pos.end + spacecnt+2;
+				}else{
+				    whole_str = void_str;
+					pos.start = pos.start + spacecnt;
+				    pos.end = pos.end + spacecnt;
+				}
+				cursorOperation.add(tx,whole_str);
+				cursorOperation.set(tx,pos); 
+			}else if ( event.shiftKey && event.keyCode == 190) {
+			    var pos = cursorOperation.get(tx);
+			    var textOp = new YDC.TextOperation(tx);
+			    var endLabel = textOp.getLabel();
+				if (endLabel != null){
+			        cursorOperation.add(tx,endLabel);
+				    cursorOperation.set(tx,pos);
+				}
+			}
+		});
+		
+		//删除键 半角全角处理
+		$('#code').keydown(function(event){
+		    if(event.keyCode == 8){
+			    var textOp = new YDC.TextOperation(tx);
+			    var row = textOp.row;
+				var pos = cursorOperation.get(tx);
+                var loc = pos.start-textOp.rowlenToCursor;
+				if (row.trim() == '' ){
+				    pos.text = '';
+				    pos.start = loc;
+					pos.end = pos.end+row.length-textOp.rowlenToCursor;
+					cursorOperation.overAdd(tx,pos);
+				}else {
+				   deleteDuad(textOp,'\"','\"');
+				   deleteDuad(textOp,'\'','\'');
+				   deleteDuad(textOp,'{','}');
+				   deleteDuad(textOp,'[',']');
+				}
+			}else if(event.keyCode == 222 && event.shiftKey){
+		    	addDuad(tx,'\"');
+			}else if(event.keyCode == 222){
+			    addDuad(tx,'\'');
+			}else if(event.keyCode == 219 && event.shiftKey){
+			    addDuad(tx,'}');
+			}else if (event.keyCode == 219){
+			    addDuad(tx,']');
+			}
+		});
+		
+		function TextListener(object){
+		    var ie = !!window.ActiveXObject;  
+            if (ie){  
+                object.onpropertychange = autoLayout;  
+            }
+			else{  
+                object.addEventListener("input",autoLayout,false);  
+            }
+		}
+		
+		//默认聚焦
+		function autoFocus(elementId) {
+            var obj = document.getElementById(elementId);
+			var inittext = '<html>\n  <head>\n  </head>\n\n  <body>\n    \n  </body>\n</html>';
+            obj.value = inittext;
+            obj.focus();
+			var subtext = {text:"",start:40,end:40};
+			cursorOperation.set(obj,subtext);
+		}
+		
+		//对Cursor稍作封装
+		var cursorOperation = {
+		    browser : new browserType(),
+		    get:function(object){
+		        return YDC.Cursor.getSelect(object,this.browser);
+		    },
+		    set:function(object,subtext){
+		        YDC.Cursor.setPosition(object,this.browser,subtext);
+		    },
+		    add:function(object,addtext){
+			    var subtext = this.get(object);
+				subtext.text = addtext;
+		        YDC.Cursor.addText(object,this.browser,subtext);
+		    },
+			overAdd:function(object,subtext){
+			    YDC.Cursor.addText(object,this.browser,subtext);
+			}
+		};
+		
+		//配对删除
+		function deleteDuad(textOp,obj1,obj2){
+			if(textOp.rowToCursor.substr(-1) == obj1 && textOp.row.substr(textOp.rowlenToCursor,textOp.rowlenToCursor+1) == obj2) {
+				var pos = cursorOperation.get(tx);
+				pos.text = '';
+				pos.end = pos.end + 1;
+				cursorOperation.overAdd(tx,pos);
+			}
+		}
+		
+		//配对增加
+		function addDuad(object,obj){
+			var pos = cursorOperation.get(object);
+			cursorOperation.add(object,obj);
+			cursorOperation.set(object,pos);
+		}
+		
+		//判断浏览器类别
+		function browserType(){
+            var ua = navigator.userAgent.toLowerCase();
+            this.msie = (/msie ([\d.]+)/).test(ua);
+            this.firefox = (/firefox\/([\d.]+)/).test(ua);
+            this.chrome = (/chrome\/([\d.]+)/).test(ua);
+        }
+	</script>	
+</body>
+</html>
+    

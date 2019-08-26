@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        $(function () {
+            var audio = document.getElementById('ydcAudio');
+            audio.volume = 0;
+            $('#nextPlay').click(function () {
+                event.stopPropagation();
+                $('#play').attr('src', './img/play.png');
+                audio.src = './audio/a.mp3';
+            });
+
+            var progressBar = new ProgressBar('cc');
+            progressBar.useBufferBar = true;
+            progressBar.showSlider = true;
+            progressBar.progressBarLength = 300;
+            progressBar.build();
+            new YAudio('ydcAudio', progressBar, true).build('play', './img/play.png', './img/pause.png', 'playedTime', 'totalTime');
+
+            var progressBar1 = new ProgressBar('kk');
+            progressBar1.progressLoadLength = audio.volume * progressBar1.progressBarLength;
+            progressBar1.build();
+            new YAudio('ydcAudio', progressBar1, false).build();
+//            drag($('#' + progressBar.progressBarId), $('.' + progressBar.controllerClassName), false);
+        });
+
+        var url = ['./img/list.png', './img/oneLoop.png', './img/listLoop.png', './img/random.png'];
+        function exchange() {
+            var s = $('#listLoop').attr('src');
+            if (s == './img/list.png') {
+                $('#listLoop').attr('src', './img/oneLoop.png')
+            } else if (s == './img/oneLoop.png') {
+                $('#ydcAudio').attr('loop', 'loop');
+                $('#listLoop').attr('src', './img/listLoop.png')
+            } else if (s == './img/listLoop.png') {
+                $('#ydcAudio').removeAttr('loop');
+                $('#listLoop').attr('src', './img/random.png')
+            } else if (s == './img/random.png') {
+                $('#listLoop').attr('src', './img/list.png')
+            }
+        }
+    </script>
+</head>
+<body>
+<audio id="ydcAudio" autoplay="autoplay" src="audio/b.mp3" loop="loop" preload="auto">
+</audio>
+<div id="audio" style="position: relative;">
+    <div style="position: absolute;background-color: gray">
+        <img id='play' height="40" width="40" src="img/play.png" alt=""/>
+        <img id='nextPlay' height="40" width="40" src="img/nextPlay.png" alt=""/>
+    </div>
+
+    <div style="position: absolute;left: 95px;top: 10px">
+        <div style="position:relative;background-color: gray">
+            <div id='playedTime' style="position:absolute; ">
+                0
+            </div>
+
+            <div id='cc' style="position:absolute;margin-top: 6px;margin-left: 50px;">
+            </div>
+
+            <div id="totalTime" style="position:absolute; margin-left: 360px;"></div>
+        </div>
+    </div>
+
+    <div style="position: absolute;left: 510px">
+        <img id='volume' style="background-color: gray" height="44" width="44" src="img/volume.png" alt=""/>
+    </div>
+
+    <div id='kk' style="position:absolute;left: 515px;top: 10px;margin-top: 6px;margin-left : 50px">
+    </div>
+
+    <div id='loop'>
+        <img id="listLoop" onclick="exchange()" src="img/listLoop.png" height="40" width="40" alt=""
+             style="background-color: gray;margin-left: 695px;">
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="./js/easyui/themes/icon.css" type="text/css"/>
+    <link rel="stylesheet" href="./js/easyui/themes/default/easyui.css" type="text/css"/>
+    <script type="text/javascript" src="./js-a/table.js"></script>
+    <script type="text/javascript">
+        $.ajax({
+            type: "GET",
+            url: "./table/queryTable.do",
+            success: function (data) {
+                var a = [];
+                $(data).each(function () {
+                    var obj = {};
+                    obj.name = this.toString();
+                    a.push(obj);
+                });
+                var config = Table.datagrid.singleSelectConfig("Table", tableStructure);
+                Table.datagrid.loadData($("#pool"), config, a, [[{field:"name", title:"表名"}]]);
+            },
+            error: function () {
+                console.log("SQL查询失败！");
+            }
+        });
+
+        function tableStructure(field, value){
+            if (field == "name") {
+                var config = Table.datagrid.multiSelectConfig("Column");
+                Table.datagrid.defineLoad($("#show"), config, './table/queryTableInfo.do?conditionValue=' + value,
+                        ["columnName"], true);
+            }
+        }
+
+        $("#trigger").click(function () {
+            var rows = $("#show").datagrid("getChecked");
+            var columns = [];
+            $(rows).each(function(){
+                columns.push(this.columnName);
+            });
+
+            var tables = $("#pool").datagrid("getChecked");
+            var source = tables[0].name;
+            $.ajax({
+                type: "GET",
+                url: "./autoCode/trigger.do",
+                data: {source: source, columns : $.toJSON(columns), target :$("#target").val()},
+                dataType : 'text',
+                success: function (data) {
+                    $("#sql").text(data);
+                },
+                error: function () {
+                    alert("trigger 失败！");
+                }
+            });
+        });
+
+        $("#insert").click(function () {
+            var rows = $("#show").datagrid("getChecked");
+            var columns = [];
+            $(rows).each(function(){
+                columns.push(this.columnName);
+            });
+
+            var tables = $("#pool").datagrid("getChecked");
+            var source = tables[0].name;
+            var alias = $("#alias").val();
+            if (alias == null || alias == '') {
+                alias = 't';
+            }
+
+            $.ajax({
+                type: "GET",
+                url: "./autoCode/insert.do",
+                data: {source: source, columns : $.toJSON(columns), target :$("#target").val(), alias : alias},
+                dataType : 'text',
+                success: function (data) {
+                    $("#sql").text(data);
+                },
+                error: function () {
+                    alert("insert 失败！");
+                }
+            });
+        });
+
+
+//        $("#query").click(function () {
+//            $.ajax({
+//                type: "GET",
+//                url: "./table/querySQL.do",
+//                data: {sql: $("#sql").val()},
+//                success: function (data) {
+//                    Table.datagrid.loadData($("#show2"), "SQL Result", data);
+//                },
+//                error: function () {
+//                    console.log("SQL查询失败！");
+//                }
+//            });
+//        });
+    </script>
+</head>
+<body>
+<div style="float: left; height: 100%; width: 28%" >
+    <table id="pool"></table>
+</div>
+<div style="height: 100%; width: 24%;float: left">
+    <table id="show"></table>
+</div>
+
+<div style="height: 99%">
+    <input id="trigger" type="button" name="button" value="trigger"/>
+    <input id="insert" type="button" name="button" value="insert"/>
+    <input id="target" type="text" placeholder="trigger and insert 插入目标对象"/>
+    <input id="alias" type="text" placeholder="insert的select 源对象别名"/>
+
+    <textarea id="sql" style="width: 45%; height: 80%;">
+
+    </textarea>
+</div>
+
+
+<!--<div style="height: 100%;">-->
+    <!--<div>-->
+        <!--<textarea id="sql" rows="10" cols="60">-->
+            <!--select a.table_name, b.column_name, b.comments, a.data_type-->
+            <!--from user_tab_cols a, user_col_comments b-->
+            <!--where a.table_name = b.table_name-->
+            <!--and a.column_name = b.column_name-->
+            <!--and a.table_name = 'MPM'-->
+        <!--</textarea>-->
+    <!--</div>-->
+
+    <!--<input id="query" type="button" name="button" value="查询"/>-->
+
+    <!--<div style="height: 100%; width: 20%;float: left">-->
+        <!--<table id="show2"></table>-->
+    <!--</div>-->
+<!--</div>-->
+
+</body>
+</html>

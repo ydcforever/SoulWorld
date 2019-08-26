@@ -1,0 +1,30 @@
+#ydc-table td {
+    border: 1px dashed lightgray;
+}
+
+#ydc-table {
+    border-collapse: collapse;
+    border: 1px solid #E0E0E0;
+    empty-cells: show;
+    font-size: 20px;
+    /*margin: 0 auto;*/
+    font-family: "Helvetica Neue", Helvetica, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.ydc-table-head-row {
+    font-size: 24px;
+    background-color: #D0D0D0;
+}
+
+input[type=checkbox] {
+    -moz-transform: scale(1.4);
+    -ms-transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    -o-transform: scale(1.4);
+    zoom: 1.4
+}
+
+.ydc-table-row-alt {
+    background : -webkit-linear-gradient(#F0F0F0, #E0E0E0, #F0F0F0);
+}
+

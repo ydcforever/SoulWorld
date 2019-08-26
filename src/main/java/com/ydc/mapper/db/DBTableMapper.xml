@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydc.mapper.db.DBTableMapper">
+    <resultMap  type="com.ydc.model.db.DBTable" id="DBTable">
+        <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR"/>
+        <result column="COMMENTS" property="comment" jdbcType="VARCHAR"/>
+        <result column="COLUMN_NAME" property="columnName" jdbcType="VARCHAR"/>
+        <result column="DATA_TYPE" property="dataType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryTables" resultType="String">
+        select table_name from user_tables order by table_name
+    </select>
+
+    <select id="queryColumns"  resultType="String" parameterType="String">
+        select a.column_name
+        from user_tab_cols a
+        where a.table_name = #{tableName, jdbcType=VARCHAR}
+        order by a.column_id
+    </select>
+
+    <select id="queryTableInfo"  resultMap="DBTable" parameterType="String">
+        select a.table_name, b.column_name, b.comments, a.data_type
+        from user_tab_cols a, user_col_comments b
+        where a.table_name = b.table_name
+        and a.column_name = b.column_name
+        and a.table_name = #{tableName, jdbcType=VARCHAR}
+        order by a.column_id
+    </select>
+
+    <select id="querySQL" resultType="Map" parameterType="java.lang.String">
+       ${value}
+    </select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ydc.mapper.tpm.TPMHeaderMapper">
+    <insert id="insert" parameterType="com.ydc.model.tpm.TPMHeader">
+        insert into TPM_HEADER
+        (
+        DESCRIPTION,
+        FILLER7,
+        EDITION_NUMBER,
+        FILLER11,
+        SUPPLEMENT_NUMBER,
+        FILLER14,
+        TYPE_OF_DATA,
+        GENERATION_DATE,
+        GENERATION_TIME,
+        RECORD_COUNT,
+        EFFECTIVE_DATE,
+        COPYRIGHT,
+        FILLER63,
+        FILE_NAME,
+		HEADER_ID
+        )
+        values
+        (
+        #{description, jdbcType=VARCHAR},
+        #{filler7, jdbcType=VARCHAR},
+        #{editionNumber, jdbcType=VARCHAR},
+        #{filler11, jdbcType=VARCHAR},
+        #{supplementNumber, jdbcType=VARCHAR},
+        #{filler14, jdbcType=VARCHAR},
+        #{typeOfData, jdbcType=VARCHAR},
+        #{generationDate, jdbcType=VARCHAR},
+        #{generationTime, jdbcType=VARCHAR},
+        #{recordCount, jdbcType=VARCHAR},
+        #{effectiveDate, jdbcType=VARCHAR},
+        #{copyright, jdbcType=VARCHAR},
+        #{filler63, jdbcType=VARCHAR},
+        #{fileName, jdbcType=VARCHAR},
+        #{headerId, jdbcType=VARCHAR}
+        )
+    </insert>
+</mapper>
